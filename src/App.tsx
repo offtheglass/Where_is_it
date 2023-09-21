@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import Map from './Components/Map';
+import MapNaverDefault from './MapNaverDefault'
 import { MarkerData, toiletMarkers, trashMarkers, waterMarkers, printerMarkers } from "./Components/Markers"
 import SelectButton from './Components/SelectButton';
 
@@ -24,6 +25,7 @@ function App() {
     <div id="content">
       <SelectButton showMarkers={showMarkers} />
       <Map markers = {markers} />
+      <MapNaverDefault/>
     </div>
   );
 }
