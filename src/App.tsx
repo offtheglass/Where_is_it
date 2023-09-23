@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import './App.css';
 import Map from './Components/Map';
-import MapNaverDefault from './MapNaverDefault'
-import { MarkerData, toiletMarkers, trashMarkers, waterMarkers, printerMarkers } from "./Components/Markers"
+import { MarkerData, toiletMarkers, trashMarkers, waterMarkers } from "./Components/Markers";
 import SelectButton from './Components/SelectButton';
 
 function App() {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
+
   const showMarkers = (selected: string) => {
     if(selected === "toilet") {
       setMarkers(toiletMarkers);
@@ -17,16 +17,18 @@ function App() {
     else if (selected === "water") {
       setMarkers(waterMarkers);
     }
-    else if (selected === "printer") {
-      setMarkers(printerMarkers);
-    }
+
   };
+
   return (
     <div id="content">
-      <SelectButton showMarkers={showMarkers} />
-      <Map markers = {markers} />
-      <MapNaverDefault/>
+      {/* <SelectButton showMarkers={showMarkers} /> */}
+      <Map markers={markers}></Map>
+      <div id="button-overlay">
+        <SelectButton showMarkers={showMarkers}/>
+      </div>
     </div>
   );
 }
+
 export default App;
