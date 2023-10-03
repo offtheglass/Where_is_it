@@ -23,7 +23,9 @@ function App() {
   return (
     <div id="content">
       {/* <SelectButton showMarkers={showMarkers} /> */}
+      <div id="mapcontainer">
       <Map markers={markers}></Map>
+      </div>
       <div id="button-overlay">
         <SelectButton showMarkers={showMarkers}/>
       </div>
