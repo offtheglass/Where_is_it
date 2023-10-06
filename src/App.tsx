@@ -17,12 +17,10 @@ function App() {
     else if (selected === "water") {
       setMarkers(waterMarkers);
     }
-
   };
 
   return (
     <div id="content">
-      {/* <SelectButton showMarkers={showMarkers} /> */}
       <Map markers={markers}></Map>
       <div id="button-overlay">
         <SelectButton showMarkers={showMarkers}/>
