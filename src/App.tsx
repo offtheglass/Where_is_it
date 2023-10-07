@@ -4,6 +4,7 @@ import Map from './Components/Map';
 import { MarkerData, toiletMarkers, trashMarkers, waterMarkers } from "./Components/Markers";
 import SelectButton from './Components/SelectButton';
 
+
 function App() {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
