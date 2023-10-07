@@ -1,0 +1,15 @@
+body {
+  margin: 0px;
+}
+
+#content{
+  width: 100%;
+  position: relative;
+}
+
+#button-overlay {
+  position: absolute;
+  top: 10px;
+  left: 5%;
+  width: 90%;
+}

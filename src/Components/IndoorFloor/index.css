@@ -1,0 +1,7 @@
+.listindoor{
+    position: absolute; /* Position the <ul> absolutely within the parent container */
+    bottom: 10px; /* Align the <ul> to the bottom of the parent container */
+    /* Other styles for the <ul> */
+    background-color: red;
+    color: red;
+}
