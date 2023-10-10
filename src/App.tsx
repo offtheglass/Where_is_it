@@ -4,6 +4,7 @@ import Map from './Components/Map';
 import { MarkerData, toiletMarkers, trashMarkers, waterMarkers } from "./Components/Markers";
 import SelectButton from './Components/SelectButton';
 
+
 function App() {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
@@ -21,7 +22,9 @@ function App() {
 
   return (
     <div id="content">
-      <Map markers={markers}></Map>
+      <div id="map-container">
+        <Map markers={markers}></Map>
+      </div>
       <div id="button-overlay">
         <SelectButton showMarkers={showMarkers}/>
       </div>
