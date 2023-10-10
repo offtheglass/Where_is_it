@@ -18,7 +18,6 @@ function App() {
     else if (selected === "water") {
       setMarkers(waterMarkers);
     }
-
   };
 
   return (

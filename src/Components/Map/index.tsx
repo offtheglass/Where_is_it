@@ -1,11 +1,10 @@
 import React,{useEffect, useState}from 'react';
 import './index.css'; // Import the CSS file
 import { NaverMap } from 'react-naver-maps';
+let clickedbuilding=''; // clickedbuilding Map 안에 선언하면 state바뀌면 초기화돼서 제대로 동작 안 함
 
 const Map = (props) => {
   let [clicked,setClicked]=useState(false);
-  let [clickedbuilding,setClickedBuilding]=useState(0);
-
   let tileSize = new naver.maps.Size(256, 256),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의이
 
   proj = {
@@ -50,30 +49,42 @@ const Map = (props) => {
       // ImageMapType을 리턴할 건데 그 옵션을 mapTypeOptions로 줌
   };
 
+  const buildings = {
+    'engineeringHall':['+1F','+2F','+3F'],
+    'scienceHall':['+1F','+2F']
+  } 
+
   useEffect(() => {
+    
     const mapDiv = document.getElementById('map');
 
     let mapOptions = {       
       center: new naver.maps.LatLng(37.5619, 126.9363), // Adjust the center as needed
       zoom: 15 // Adjust the zoom level as needed}
     }
-
+    
     if(clicked){ // 건물이 클릭되었다면 지도에 들어가는 option을 바꿔서 이미지타입의 지도를 띄움, if문은 그 option을 변경하는 로직
-
+      let maptypeids=buildings[clickedbuilding]; // maptypeids = ['+1F','+2F','+3F'] 이런 식으로 써있음
+      let maptypes={
+        // '+1F':getMapType('1F'),
+        // '+2F':getMapType('2F'),
+        // '+3F':getMapType('3F') 이런식으로 써야함
+      };
+      
+      buildings[clickedbuilding].map((value:string)=>{ maptypes[value]=getMapType(value.substring(1))})
+      // 클릭된 빌딩의 정보를 가지고 maptypes를 update함
+      
       mapOptions = {
       center: new naver.maps.Point(128, 128),
       zoom: 2,
       background: '#FFFFFF',
-      mapTypes: new naver.maps.MapTypeRegistry({
-          '+1F': getMapType('1F'),
-          '+2F': getMapType('2F'),
-          '+4F': getMapType('4F'),
-          '+5F': getMapType('5F'),
-      }), // 지도 유형의 컬렉션을 포함하는 객체
+      mapTypes: new naver.maps.MapTypeRegistry(
+          maptypes
+      ), // 지도 유형의 컬렉션을 포함하는 객체
       mapTypeId: '+1F',   // mapTypeId: 초기 지도 유형의 id
       mapTypeControl: true, //
       mapTypeControlOptions: {
-          mapTypeIds: ['+1F', '+2F', '+4F', '+5F'],
+          mapTypeIds: maptypeids, //['+1F', '+2F', '+4F', '+5F'],
           position: naver.maps.Position.BOTTOM_CENTER, // 지도 유형 컨트롤을 배치할 위치.
           style: naver.maps.MapTypeControlStyle.BUTTON // 지도 유형 컨트롤의 스타일입니다.
       },
@@ -117,7 +128,8 @@ const Map = (props) => {
     // 이 네모 상자를 클릭하면 함수가 실행되도록 eventListener를 등록
     naver.maps.Event.addListener(engineeringHallPolygon, "click", function () {
       alert('engineeringHallPolygon click');
-      setClickedBuilding(1); 
+      clickedbuilding='engineeringHall'; // 공학관
+      console.log('eventlistener is '+clickedbuilding);
       setClicked(true); // Clicked를 true로 바꿔서 useEffect 함수가 실행되도록해서 지도의 옵션을 이미지로 바꾸도록함
 
     });
@@ -137,7 +149,7 @@ const Map = (props) => {
 
     naver.maps.Event.addListener(scienceHallPolygon, "click", function () {
       alert('scienceHallPolygon click');
-      setClickedBuilding(0);
+      clickedbuilding='scienceHall'; // 과학관  
       setClicked(true);
     });
 
@@ -150,7 +162,8 @@ const Map = (props) => {
     <div id="map" className={clicked+'a'}>
     </div>
     <div>
-      {clicked&&<button onClick={()=>{setClicked(false);}}>돌아가기</button>}
+      {clicked&&<button onClick={()=>{window.location.reload();
+}}>돌아가기</button>}
     </div>
     </div>
   );
