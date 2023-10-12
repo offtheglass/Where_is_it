@@ -1,12 +1,12 @@
 import React,{useEffect, useState}from 'react';
 import './index.css'; // Import the CSS file
-import { NaverMap } from 'react-naver-maps';
+import { Marker, NaverMap } from 'react-naver-maps';
 let clickedbuilding=''; // clickedbuilding Map 안에 선언하면 state바뀌면 초기화돼서 제대로 동작 안 함
 
 const Map = (props) => {
-  let [clicked,setClicked]=useState(false);
-  let tileSize = new naver.maps.Size(256, 256),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의이
 
+  let [clicked,setClicked]=useState(false);
+  let tileSize = new naver.maps.Size(256,256),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의미
   proj = {
       fromCoordToPoint: function(coord) {
           let pcoord = coord.clone();
@@ -14,7 +14,7 @@ const Map = (props) => {
           if (coord instanceof naver.maps.LatLng) {
               pcoord = new naver.maps.Point(coord.lng(), coord.lat());
           }
-
+        
           return pcoord.div(tileSize.width, tileSize.height);
       },
 
@@ -23,11 +23,13 @@ const Map = (props) => {
       }
   },  // getMapType 함수에서
 
+  
   getMapType = function(floor) { // getMapType 함수는 층을 입력받아서 그에 해당하는 옵션의 이미지 타입을 리턴
+      console.log("floor+1 is "+(floor.slice(0,-1)+1));
       let commonOptions = {
               name: '',
               minZoom: 0,
-              maxZoom: 4,
+              maxZoom: 16,
               tileSize: tileSize,
               projection: proj,
               repeatX: false,
@@ -38,7 +40,9 @@ const Map = (props) => {
           mapTypeOptions = {
               ...commonOptions,
               name: floor,
-              tileSet:'http://127.0.0.1:8080/haerin'+floor+'.jpeg', 
+              tileSet:[//'http://127.0.0.1:8080/haerin'+floor+'.jpeg',
+                       'http://127.0.0.1:8080/haerin'+(Number(floor.slice(0,-1))+1)+'F.jpeg' 
+              ], 
               // tileSet: 지도의 타일 이미지 URL 또는 URL의 목록을 지정, 건물을 누르면 뜨는 이미지의 URL을 tileSet에 입력하면 됨
               uid: 'naver:greenfactory:' + floor
           };
@@ -53,6 +57,7 @@ const Map = (props) => {
     'engineeringHall':['+1F','+2F','+3F'],
     'scienceHall':['+1F','+2F']
   } 
+
 
   useEffect(() => {
     
@@ -70,7 +75,7 @@ const Map = (props) => {
         // '+2F':getMapType('2F'),
         // '+3F':getMapType('3F') 이런식으로 써야함
       };
-      
+
       buildings[clickedbuilding].map((value:string)=>{ maptypes[value]=getMapType(value.substring(1))})
       // 클릭된 빌딩의 정보를 가지고 maptypes를 update함
       
@@ -97,14 +102,28 @@ const Map = (props) => {
 
     let map = new naver.maps.Map(mapDiv, mapOptions);  // option을 가지고 지도를 그림, if 문이 실행되면 이미지 타입의 옵션이 mapOption에 들어가고
                                                        // 아니라면 디폴트로 설정해놓은 옵션이 들어감
+
+    let mks = [];
     
+    props.markers.forEach( (marker) => {
+        console.log(map); // map은 undefined가 아님
+        console.log(marker);
+        let mk = new naver.maps.Marker(
+        {
+          position: new naver.maps.LatLng(marker.latitude, marker.longitude),
+          map:map
+        }
+      )
+      mks.push(mk);
+    });
 
     // Define polygon coordinates, 빨간 위치로 표시되는 곳의 위치
     const engineeringHallCoords = [
-      new naver.maps.LatLng(37.5645, 126.9380),
-      new naver.maps.LatLng(37.5645, 126.9390),
-      new naver.maps.LatLng(37.5650, 126.9390),
-      new naver.maps.LatLng(37.5650, 126.9380),
+      new naver.maps.LatLng(37.561849, 126.93575),
+      new naver.maps.LatLng(37.561649, 126.936481),
+      new naver.maps.LatLng(37.561889, 126.936550),
+      new naver.maps.LatLng(37.562034, 126.935732),
+
     ];
 
     const scienceHallCoords =[
@@ -115,18 +134,20 @@ const Map = (props) => {
     ];
 
     // Create the polygon , 빨간색으로 표시되는 네모상자를 만듦
-    const engineeringHallPolygon = new naver.maps.Polygon({
+    const PolygonOptions = {
       map: map,
       paths: engineeringHallCoords,
-      strokeColor: 'red', // Set the stroke color to red
+      strokeColor: '#D5DBDB', // Polygon 테두리 컬러
       strokeOpacity: 0.7,
       strokeWeight: 2,
-      fillColor: '#FF0000',
+      fillColor: '#E0F4F3',
       fillOpacity: 0.3,
       clickable: true
-    });
+    }
+
+    const engineeringHallPolygon = new naver.maps.Polygon(PolygonOptions);
     // 이 네모 상자를 클릭하면 함수가 실행되도록 eventListener를 등록
-    naver.maps.Event.addListener(engineeringHallPolygon, "click", function () {
+    naver.maps.Event.addListener(engineeringHallPolygon, "click", function () { ``
       alert('engineeringHallPolygon click');
       clickedbuilding='engineeringHall'; // 공학관
       console.log('eventlistener is '+clickedbuilding);
@@ -134,17 +155,24 @@ const Map = (props) => {
 
     });
 
+    naver.maps.Event.addListener(engineeringHallPolygon, 'mouseover', () => {
+        console.log('mouseover');
+        engineeringHallPolygon.setOptions({
+            ...PolygonOptions,fillColor:'gray'
+        });
+    });
+  
+    naver.maps.Event.addListener(engineeringHallPolygon, 'mouseout', () => {
+        console.log('mouseout');
+        engineeringHallPolygon.setOptions({
+          ...PolygonOptions,fillColor:'#E0F4F3'
+        });
+    });
+
     // scienceHallPolygon과 여기에 대한 이벤트 리스너를 등록, 위의 engineeringHallPolygon과 똑같은 로직
 
     const scienceHallPolygon = new naver.maps.Polygon({
-      map: map,
-      paths: scienceHallCoords,
-      strokeColor: 'red', // Set the stroke color to red
-      strokeOpacity: 0.7,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.3,
-      clickable: true
+      ...PolygonOptions,paths:scienceHallCoords
     });
 
     naver.maps.Event.addListener(scienceHallPolygon, "click", function () {
@@ -153,7 +181,9 @@ const Map = (props) => {
       setClicked(true);
     });
 
-  }, [clicked]);
+  }, [clicked,props]);
+
+
 // useEffect 끝, useEffect는 처음 화면이 마운트될때랑 clicked라는 state가 변경될 때마다 실행됨
   
 
@@ -170,3 +200,4 @@ const Map = (props) => {
 };
 
 export default Map
+
