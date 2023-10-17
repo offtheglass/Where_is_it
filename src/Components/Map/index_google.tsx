@@ -7,7 +7,7 @@ let clickedbuilding=''; // clickedbuilding Map 안에 선언하면 state바뀌�
 const Map = (props) => {
 
   let [clicked,setClicked]=useState(false);
-  let tileSize = new naver.maps.Size(256,256),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의미
+  let tileSize = new naver.maps.Size(1024,512),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의미
   proj = {
       fromCoordToPoint: function(coord) {
           let pcoord = coord.clone();
@@ -16,13 +16,13 @@ const Map = (props) => {
               pcoord = new naver.maps.Point(coord.lng(), coord.lat());
           }
         
-          return pcoord.div(tileSize.width, tileSize.height);
-          // return pcoord.div(256, 256); // 사진이 지도의 어느 위치에 뜨는지 결정해주는 듯
+          //return pcoord.div(tileSize.width, tileSize.height); 원래코드
+          return pcoord.div(256, 256); // 사진이 지도의 어느 위치에 뜨는지 결정해주는 듯
       },
 
       fromPointToCoord: function(point) {
-          return point.clone().mul(tileSize.width, tileSize.height);
-          // return point.clone().mul(256, 256);
+          // return point.clone().mul(tileSize.width, tileSize.height);
+          return point.clone().mul(256, 256);
       }
   },  // getMapType 함수에서
 
@@ -32,7 +32,7 @@ const Map = (props) => {
       let commonOptions = {
               name: '',
               minZoom: 0,
-              maxZoom: 2,
+              maxZoom: 1,
               tileSize: tileSize,
               projection: proj,
               repeatX: false,
@@ -44,7 +44,7 @@ const Map = (props) => {
               ...commonOptions,
               name: floor,
               tileSet:[//'http://127.0.0.1:8080/haerin'+floor+'.jpeg',
-                       'http://127.0.0.1:8080/haerin'+(Number(floor.slice(0,-1))+1)+'F_{z}_{x}_{y}.jpeg' 
+                       'http://127.0.0.1:8080/haerin'+(Number(floor.slice(0,-1))+1)+'F.jpeg' 
               ], 
               // tileSet: 지도의 타일 이미지 URL 또는 URL의 목록을 지정, 건물을 누르면 뜨는 이미지의 URL을 tileSet에 입력하면 됨
               uid: 'naver:greenfactory:' + floor
