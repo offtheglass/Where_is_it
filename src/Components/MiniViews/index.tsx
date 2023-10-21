@@ -1,15 +1,25 @@
 import React from "react";
+import './index.css';
 
 interface MiniViewProps {
+    floor: number;
     description: string;
 }
 
-const MiniView:React.FC<MiniViewProps> = ({ description }) => {
+const MiniView:React.FC<MiniViewProps> = ({ floor, description }) => {
     return (
         <div id="miniview-container">
-            <div id="miniview-content">
+            <span className="bold-letters">
+                {"Floor "}
+            </span>
+                {floor} <br/>
+            <span className="bold-letters">
+                {"Info "}
+            </span>
                 {description}
-            </div>
+            {/* <button id="miniview-button">
+                경로
+            </button> */}
         </div>
     );
 };
