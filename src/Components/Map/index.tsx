@@ -1,15 +1,38 @@
-import React,{useEffect, useState}from 'react';
+import React,{useEffect, useState,useRef}from 'react';
 import './index.css'; // Import the CSS file
-import { Marker, NaverMap } from 'react-naver-maps';
 import { buildings,engineeringHallCoords,scienceHallCoords } from './buildings';
+import { getDownloadURL, getStorage,ref } from 'firebase/storage';
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD5YUsJ0qRcmMTCEsXqHIOm6Jg0TGkBtDQ",
+  authDomain: "where-is-it-8a8ff.firebaseapp.com",
+  projectId: "where-is-it-8a8ff",
+  storageBucket: "where-is-it-8a8ff.appspot.com",
+  messagingSenderId: "398212843144",
+  appId: "1:398212843144:web:32a6db31ab9e05a912013d",
+  measurementId: "G-KH9GKZ4F9D"
+};
+
+
+
+
+
+
+
 let clickedbuilding=''; // clickedbuilding Map 안에 선언하면 state바뀌면 초기화돼서 제대로 동작 안 함
 
 const Map = (props) => {
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage(app);
+  const [imageurl,Setimageurl]=useState("");
+  // firebase 관련코드
 
   let [clicked,setClicked]=useState(false);
   let tileSize = new naver.maps.Size(256,256),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의미
   proj = {
-      fromCoordToPoint: function(coord) {
+      
+      fromCoordToPoint: function(coord) { 
           let pcoord = coord.clone();
           
           if (coord instanceof naver.maps.LatLng) {
@@ -21,14 +44,23 @@ const Map = (props) => {
       },
 
       fromPointToCoord: function(point) {
+          console.log(point);
           return point.clone().mul(tileSize.width, tileSize.height);
           // return point.clone().mul(256, 256);
       }
   },  // getMapType 함수에서
 
-  
-  getMapType = function(floor) { // getMapType 함수는 층을 입력받아서 그에 해당하는 옵션의 이미지 타입을 리턴
-      console.log("floor+1 is "+(floor.slice(0,-1)+1));
+  getMapType = async function(floor) { // getMapType 함수는 층을 입력받아서 그에 해당하는 옵션의 이미지 타입을 리턴
+      // const imageRef = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin"+(Number(floor.slice(0,-1))+1)+'F_0_0_0.jpeg'); // Replace with the actual path to your image
+      
+      
+      const imageRef_1_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin2F_1_0_0.jpeg"); // Replace with the actual path to your image
+      const imageRef_1_0_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin2F_1_0_1.jpeg"); // Replace with the actual path to your image
+      // 이런 식으로 url 다 한 개씩 노가다로 받아와서
+      // line 89에서 사용하고 tileset에 추가하는 방법 가능
+      // 더 좋은 방법 없는지 물어보기
+      
+     
       let commonOptions = {
               name: '',
               minZoom: 0,
@@ -40,21 +72,51 @@ const Map = (props) => {
               vendor: '\xa9 NAVER Corp.',
               uid: ''
           },
-          mapTypeOptions = {
+      mapTypeOptions = {
               ...commonOptions,
               name: floor,
-              tileSet:[//'http://127.0.0.1:8080/haerin'+floor+'.jpeg',
-                       'http://127.0.0.1:8080/haerin'+(Number(floor.slice(0,-1))+1)+'F_{z}_{x}_{y}.jpeg' 
-              ], 
+              tileSet:[ //'http://127.0.0.1:8080/haerin'+floor+'.jpeg',
+                      //  'http://127.0.0.1:8080/haerin'+(Number(floor.slice(0,-1))+1)+'F_{z}_{x}_{y}.jpeg' 
+                      // 'https://firebasestorage.googleapis.com/v0/b/where-is-it-8a8ff.appspot.com/o/haerin2F_1_0_0.jpeg?alt=media&token=c9bcba7a-9588-4d32-87da-3dfdbebf3fc3' 
+                      
+                    ], 
               // tileSet: 지도의 타일 이미지 URL 또는 URL의 목록을 지정, 건물을 누르면 뜨는 이미지의 URL을 tileSet에 입력하면 됨
               uid: 'naver:greenfactory:' + floor
           };
-
+      
       // mapTypeOptions는 지도의 유형을 정의할 때 쓰이는 옵션
 
-      return new naver.maps.ImageMapType(mapTypeOptions);
+
+      const url_1_0_0 = await getDownloadURL(imageRef_1_0_0);
+      mapTypeOptions.tileSet.push(url_1_0_0);
+      const url_1_0_1 = await getDownloadURL(imageRef_1_0_1);
+      mapTypeOptions.tileSet.push(url_1_0_1);
+      const promise = await new naver.maps.ImageMapType(mapTypeOptions);
+      return promise;
+
+      // console.log(url);
+      // console.log(mapTypeOptions); // 정상출력
+      // // mapTypeOptions.tileSet=[url]; //
+      // console.log("url is Defined");
+      // console.log(new naver.maps.ImageMapType(mapTypeOptions));
+      // return new naver.maps.ImageMapType(mapTypeOptions);
+
+      // then((url) =>{
+      //   console.log(url);
+      //   console.log(mapTypeOptions); // 정상출력
+      //   // mapTypeOptions.tileSet=[url]; //
+      //   console.log("url is Defined");
+      //   console.log(new naver.maps.ImageMapType(mapTypeOptions));
+      //   return new naver.maps.ImageMapType(mapTypeOptions);
+      // });
+
+      // console.log(new naver.maps.ImageMapType(mapTypeOptions));
+      // return new naver.maps.ImageMapType(mapTypeOptions);
+        
       // ImageMapType을 리턴할 건데 그 옵션을 mapTypeOptions로 줌
   };
+
+  
 
   // const buildings = {
   //   'engineeringHall':['+1F','+2F','+3F'],
@@ -62,8 +124,7 @@ const Map = (props) => {
   // } 
 
 
-  useEffect(() => {
-    
+  const loadMap = async () => {
     const mapDiv = document.getElementById('map');
 
     let mapOptions = {       
@@ -78,8 +139,19 @@ const Map = (props) => {
         // '+2F':getMapType('2F'),
         // '+3F':getMapType('3F') 이런식으로 써야함
       };
+      let a = 1;
+      const setMapTypes = await Promise.all(
+        buildings[clickedbuilding].map(async (value:string)=>{ 
+          const result = await getMapType(value.substring(1));
+          maptypes[value]=result; 
+          console.log(a);
+          return result;
+    })
+      ); //all()
+      console.log("end");
 
-      buildings[clickedbuilding].map((value:string)=>{ maptypes[value]=getMapType(value.substring(1))})
+
+
       // 클릭된 빌딩의 정보를 가지고 maptypes를 update함
       
       mapOptions = {
@@ -185,7 +257,10 @@ const Map = (props) => {
       clickedbuilding='scienceHall'; // 과학관  
       setClicked(true);
     });
+  }
 
+  useEffect(() => {
+    loadMap();
   }, [clicked,props]);
 
 
@@ -205,4 +280,3 @@ const Map = (props) => {
 };
 
 export default Map
-export {}
