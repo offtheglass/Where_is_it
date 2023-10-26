@@ -44,7 +44,6 @@ const Map = (props) => {
       },
 
       fromPointToCoord: function(point) {
-          console.log(point);
           return point.clone().mul(tileSize.width, tileSize.height);
           // return point.clone().mul(256, 256);
       }
@@ -54,11 +53,17 @@ const Map = (props) => {
       // const imageRef = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin"+(Number(floor.slice(0,-1))+1)+'F_0_0_0.jpeg'); // Replace with the actual path to your image
       
       
-      const imageRef_1_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin2F_1_0_0.jpeg"); // Replace with the actual path to your image
-      const imageRef_1_0_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin2F_1_0_1.jpeg"); // Replace with the actual path to your image
-      // 이런 식으로 url 다 한 개씩 노가다로 받아와서
-      // line 89에서 사용하고 tileset에 추가하는 방법 가능
-      // 더 좋은 방법 없는지 물어보기
+      const engineeringhall_0_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_0_0_0.png"); // Replace with the actual path to your image
+      const engineeringhall_1_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_0_0.png"); // Replace with the actual path to your image
+      const engineeringhall_1_0_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_0_1.png"); // Replace with the actual path to your image
+      const engineeringhall_1_1_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_1_0.png"); // Replace with the actual path to your image
+      const engineeringhall_1_1_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_1_1.png"); // Replace with the actual path to your image
+     
+    // https로 접근하려면 https://firebasestorage.googleapis.com/v0/b/where-is-it-8a8ff.appspot.com/o/engineeringhall_0_0_0.png?alt=media&token=토큰 입려하면됨
+     
+    // 이런 식으로 url 다 한 개씩 노가다로 받아와서
+    // line 89에서 사용하고 tileset에 추가하는 방법 가능
+    // 더 좋은 방법 없는지 물어보기
       
      
       let commonOptions = {
@@ -76,9 +81,12 @@ const Map = (props) => {
               ...commonOptions,
               name: floor,
               tileSet:[ //'http://127.0.0.1:8080/haerin'+floor+'.jpeg',
-                      //  'http://127.0.0.1:8080/haerin'+(Number(floor.slice(0,-1))+1)+'F_{z}_{x}_{y}.jpeg' 
-                      // 'https://firebasestorage.googleapis.com/v0/b/where-is-it-8a8ff.appspot.com/o/haerin2F_1_0_0.jpeg?alt=media&token=c9bcba7a-9588-4d32-87da-3dfdbebf3fc3' 
-                      
+                      //  'http://127.0.0.1:8080/engineeringhall_1_0_0.png',
+                      //  'http://127.0.0.1:8080/engineeringhall_1_1_0.png',
+                      //  'http://127.0.0.1:8080/engineeringhall_1_0_1.png', 
+                      //  'http://127.0.0.1:8080/engineeringhall_1_1_1.png',
+                      "https://storage.googleapis.com/where-is-it-8a8ff.appspot.com/engineeringhall%3A{z}%3A{x}%3A{y}.png"
+                      // [a,b,c,d]로 놓으면 a가 (0,0)에, b가 (1,0)과 (0,1)에, c가 (1,1)에 들어옴
                     ], 
               // tileSet: 지도의 타일 이미지 URL 또는 URL의 목록을 지정, 건물을 누르면 뜨는 이미지의 URL을 tileSet에 입력하면 됨
               uid: 'naver:greenfactory:' + floor
@@ -87,10 +95,19 @@ const Map = (props) => {
       // mapTypeOptions는 지도의 유형을 정의할 때 쓰이는 옵션
 
 
-      const url_1_0_0 = await getDownloadURL(imageRef_1_0_0);
-      mapTypeOptions.tileSet.push(url_1_0_0);
-      const url_1_0_1 = await getDownloadURL(imageRef_1_0_1);
-      mapTypeOptions.tileSet.push(url_1_0_1);
+      // const engineeringhallurl_0_0_0 = await getDownloadURL(engineeringhall_0_0_0);
+      // mapTypeOptions.tileSet.push(engineeringhallurl_0_0_0);
+      // const engineeringhallurl_1_0_0 = await getDownloadURL(engineeringhall_1_0_0);
+      // mapTypeOptions.tileSet.push(engineeringhallurl_1_0_0);
+      // const engineeringhallurl_1_0_1 = await getDownloadURL(engineeringhall_1_0_1);
+      // mapTypeOptions.tileSet.push(engineeringhallurl_1_0_1);
+      // const engineeringhallurl_1_1_0 = await getDownloadURL(engineeringhall_1_1_0);
+      // mapTypeOptions.tileSet.push(engineeringhallurl_1_1_0);  
+      // const engineeringhallurl_1_1_1 = await getDownloadURL(engineeringhall_1_1_1);
+      // mapTypeOptions.tileSet.push(engineeringhallurl_1_1_1);
+      
+      
+
       const promise = await new naver.maps.ImageMapType(mapTypeOptions);
       return promise;
 
@@ -156,7 +173,7 @@ const Map = (props) => {
       
       mapOptions = {
       center: new naver.maps.Point(128, 128),
-      zoom: 2,
+      zoom: 1,
       background: '#FFFFFF',
       mapTypes: new naver.maps.MapTypeRegistry(
           maptypes
@@ -181,8 +198,8 @@ const Map = (props) => {
     let mks = [];
     
     props.markers.forEach( (marker) => {
-        console.log(map); // map은 undefined가 아님
-        console.log(marker);
+        // console.log(map); // map은 undefined가 아님
+        // console.log(marker);
         let mk = new naver.maps.Marker(
         {
           position: new naver.maps.LatLng(marker.latitude, marker.longitude),
@@ -227,7 +244,7 @@ const Map = (props) => {
     naver.maps.Event.addListener(engineeringHallPolygon, "click", function () { ``
       alert('engineeringHallPolygon click');
       clickedbuilding='engineeringHall'; // 공학관
-      console.log('eventlistener is '+clickedbuilding);
+      // console.log('eventlistener is '+clickedbuilding);
       setClicked(true); // Clicked를 true로 바꿔서 useEffect 함수가 실행되도록해서 지도의 옵션을 이미지로 바꾸도록함
 
     });
@@ -249,7 +266,7 @@ const Map = (props) => {
     // scienceHallPolygon과 여기에 대한 이벤트 리스너를 등록, 위의 engineeringHallPolygon과 똑같은 로직
 
     const scienceHallPolygon = new naver.maps.Polygon({
-      ...PolygonOptions,paths:scienceHallCoords
+      ...PolygonOptions,paths: scienceHallCoords
     });
 
     naver.maps.Event.addListener(scienceHallPolygon, "click", function () {
@@ -257,6 +274,20 @@ const Map = (props) => {
       clickedbuilding='scienceHall'; // 과학관  
       setClicked(true);
     });
+
+    naver.maps.Event.addListener(scienceHallPolygon, 'mouseout', () => {
+      console.log('mouseout');
+      scienceHallPolygon.setOptions({
+        ...PolygonOptions,fillColor:'#E0F4F3',paths:scienceHallCoords
+      });
+  });
+    naver.maps.Event.addListener(scienceHallPolygon, 'mouseover', () => {
+      console.log('mouseover');
+      scienceHallPolygon.setOptions({
+          ...PolygonOptions,fillColor:'gray',paths:scienceHallCoords
+      });
+  });
+
   }
 
   useEffect(() => {
