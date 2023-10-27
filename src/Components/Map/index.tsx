@@ -3,6 +3,7 @@ import './index.css'; // Import the CSS file
 import { buildings,engineeringHallCoords,scienceHallCoords,engineeringHall2Coords } from './buildings';
 import { getDownloadURL, getStorage,ref } from 'firebase/storage';
 import { initializeApp } from "firebase/app";
+import MiniView from '../MiniViews';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD5YUsJ0qRcmMTCEsXqHIOm6Jg0TGkBtDQ",
@@ -27,7 +28,7 @@ const Map = (props) => {
   const storage = getStorage(app);
   const [imageurl,Setimageurl]=useState("");
   // firebase 관련코드
-
+  const [miniViewMarker, setMiniViewMarker] = useState< [number, string] | null>(null);
   let [clicked,setClicked]=useState(false);
   let tileSize = new naver.maps.Size(256,256),  // 건물 클릭했을 때 나오는 이미지의 사이즈를 의미
   proj = {
@@ -144,8 +145,8 @@ const Map = (props) => {
     const mapDiv = document.getElementById('map');
 
     let mapOptions = {       
-      center: new naver.maps.LatLng(37.5619, 126.9363), // Adjust the center as needed
-      zoom: 15 // Adjust the zoom level as needed}
+      center: new naver.maps.LatLng(37.56399, 126.93845), // Adjust the center as needed
+      zoom: 16 // Adjust the zoom level as needed}
     }
     
     if(clicked){ // 건물이 클릭되었다면 지도에 들어가는 option을 바꿔서 이미지타입의 지도를 띄움, if문은 그 option을 변경하는 로직
@@ -204,7 +205,10 @@ const Map = (props) => {
           position: new naver.maps.LatLng(marker.latitude, marker.longitude),
           map:map
         }
-      )
+      );
+      naver.maps.Event.addListener(mk, 'click', () => {
+        setMiniViewMarker([parseInt(marker.id[1]), marker.description]);
+      });    
       mks.push(mk);
     });
 
@@ -324,12 +328,15 @@ const Map = (props) => {
 
   return (
     <div id="map-container">
-    <div id="map" className={clicked+'a'}>
-    </div>
-    <div>
-      {clicked&&<button onClick={()=>{window.location.reload();
-}}>돌아가기</button>}
-    </div>
+      <div id="map" className={clicked+'a'}>
+      </div>
+      <div>
+        {clicked&&<button id="return-button" onClick={()=>{window.location.reload();
+  }}>돌아가기</button>}
+      </div>
+      <div>
+        {miniViewMarker && <MiniView floor={miniViewMarker[0]} description={miniViewMarker[1]}/>}
+      </div>
     </div>
   );
 };

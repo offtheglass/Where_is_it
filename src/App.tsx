@@ -23,18 +23,20 @@ function App() {
     }
     else if (selected === "misc") {
       setMarkers(miscMarkers);
+    } else {
+      setMarkers([]);
     }
   };
 
   return (
     <div id="content">
       {/* <SelectButton showMarkers={showMarkers} /> */}
-      <div id="Title">Where is it</div>
-      <div id="mapcontainer">
-      <Map markers={markers}></Map>
-      </div>
+      <div id="title">Where is it ?</div>
       <div id="button-overlay">
         <SelectButton showMarkers={showMarkers}/>
+      </div>
+      <div id="mapcontainer">
+      <Map markers={markerDataList}></Map>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ export const miscMarkers: MarkerData[] = [
 
 export const safeMarkers: MarkerData[] = [
     {latitude: 37.5618, longitude: 126.9365, id: "S121", description: "fire extinguisher"},
-    {latitude: 37.5618, longitude: 126.9364, id: "S221", description: "chemical safety"},
+    {latitude: 37.5618, longitude: 126.9364, id: "S221", description: "chemical safety shower"},
     {latitude: 37.5619, longitude: 126.9365, id: "S323", description: "defibrillator"},
 ]
 

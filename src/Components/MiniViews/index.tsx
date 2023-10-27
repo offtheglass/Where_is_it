@@ -9,11 +9,11 @@ interface MiniViewProps {
 const MiniView:React.FC<MiniViewProps> = ({ floor, description }) => {
     return (
         <div id="miniview-container">
-            <span className="bold-letters">
+            <span className="header-letters">
                 {"Floor "}
             </span>
-                {floor} <br/>
-            <span className="bold-letters">
+                {floor}F <br/>
+            <span className="header-letters">
                 {"Info "}
             </span>
                 {description}
