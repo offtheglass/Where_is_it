@@ -5,10 +5,27 @@
   padding: 2rem;
   text-align: center;
 }
-#Title{
-  font-family:'BMJUA_otf';
-  font-size: xx-large;
-  font-weight: bold;
+
+body {
+  margin: 0px;
+}
+
+#content{
+  width: 100%;
+  position: relative;
+}
+
+#title{
+  font-family: "Monsterrat", Arial, Helvetica, sans-serif;
+  font-size: 2em;
+  font-weight: 800;
+  text-align: left;
+}
+
+#button-overlay {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
 }
 
 /* .logo {

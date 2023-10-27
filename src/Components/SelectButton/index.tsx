@@ -22,9 +22,11 @@ const SelectButton: React.FC<SelectButtonProps> = ({ showMarkers,change_MarkersC
 }
     return (
         <div id="buttons-container">
-            <button onClick = {()=> show_and_hide_Markers('toilet')}> 🚽 Toilet </button>
-            <button onClick = {() => show_and_hide_Markers('trash')}> 🗑️ Trash Can </button>
-            <button onClick = {() => show_and_hide_Markers('water')}> 💧 Water Fountain </button>
+            <button className={"facility-button"} onClick = {()=> show_and_hide_Markers('toilet')}> Toilet </button>
+            <button className={"facility-button"} onClick = {() => show_and_hide_Markers('trash')}> Bins </button>
+            <button className={"facility-button"} onClick = {() => show_and_hide_Markers('water')}> Drinks </button>
+            <button className={"facility-button"} onClick = {() => show_and_hide_Markers('safe')}> Emergency </button>
+            <button className={"facility-button"} onClick = {() => show_and_hide_Markers('water')}> Misc </button>
         </div>
     );
 };

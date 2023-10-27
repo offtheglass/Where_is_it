@@ -7,8 +7,3 @@ body {
   position: relative;
 }
 
-#button-overlay {
-  position: absolute;
-  left: 5%;
-  width: 90%;
-}

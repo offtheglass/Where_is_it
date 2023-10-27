@@ -1,0 +1,29 @@
+#miniview-container {
+    border-left: 1px solid #000000;
+    box-sizing: border-box;  
+    height: 600px; 
+    width: 200px;
+    padding: 10px; 
+    text-align: left;
+    top: 0px;
+    right: 0px;
+    background-color: white;
+    z-index: 999;
+    position: absolute;
+    animation: slide-from-right 1s;
+    font-family: "Monsterrat", Arial, Helvetica, sans-serif;
+}
+
+.header-letters {
+    font-weight: 600;
+    color: #5ca71f;
+}
+
+@keyframes slide-from-right {
+    from {
+        right:-200px;
+    } 
+    to {
+        right:0;
+    }
+}
