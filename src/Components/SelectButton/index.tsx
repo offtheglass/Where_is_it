@@ -3,14 +3,28 @@ import "./index.css"
 
 interface SelectButtonProps {
     showMarkers: (type: string) => void;
+    change_MarkersClicked: () => void;
+    clicked:boolean;
+
 }
 
-const SelectButton: React.FC<SelectButtonProps> = ({ showMarkers }) => {
+const SelectButton: React.FC<SelectButtonProps> = ({ showMarkers,change_MarkersClicked,clicked }) => {
+    
+    const show_and_hide_Markers = (marker:string) =>{
+        if(clicked===false){
+            showMarkers(marker);
+            change_MarkersClicked();
+        }
+        else{
+            change_MarkersClicked();
+            
+        }
+}
     return (
         <div id="buttons-container">
-            <button onClick = {() => showMarkers('toilet')}> 🚽 Toilet </button>
-            <button onClick = {() => showMarkers('trash')}> 🗑️ Trash Can </button>
-            <button onClick = {() => showMarkers('water')}> 💧 Water Fountain </button>
+            <button onClick = {()=> show_and_hide_Markers('toilet')}> 🚽 Toilet </button>
+            <button onClick = {() => show_and_hide_Markers('trash')}> 🗑️ Trash Can </button>
+            <button onClick = {() => show_and_hide_Markers('water')}> 💧 Water Fountain </button>
         </div>
     );
 };

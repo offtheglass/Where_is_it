@@ -7,8 +7,9 @@ import './Font/Font.css'
 
 function App() {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
-
+  const [markerscliked,setMarkersclicked]=useState<boolean>(false);
   const showMarkers = (selected: string) => {
+    
     if(selected === "toilet") {
       setMarkers(toiletMarkers);
     }
@@ -20,6 +21,16 @@ function App() {
     }
   };
 
+  const change_MarkersClicked = () => {
+    if(markerscliked===true){
+      setMarkersclicked(false);
+      setMarkers([]);
+    }
+    else{
+      setMarkersclicked(true);
+    }
+    console.log(markerscliked);
+  }
   return (
     <div id="content">
       {/* <SelectButton showMarkers={showMarkers} /> */}
@@ -28,7 +39,7 @@ function App() {
       <Map markers={markers}></Map>
       </div>
       <div id="button-overlay">
-        <SelectButton showMarkers={showMarkers}/>
+        <SelectButton showMarkers={showMarkers} change_MarkersClicked={change_MarkersClicked} clicked={markerscliked} />
       </div>
     </div>
   );

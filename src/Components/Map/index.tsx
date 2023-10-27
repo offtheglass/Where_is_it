@@ -1,6 +1,6 @@
 import React,{useEffect, useState,useRef}from 'react';
 import './index.css'; // Import the CSS file
-import { buildings,engineeringHallCoords,scienceHallCoords,engineeringHall2Coords } from './buildings';
+import { buildings,engineeringHallCoords,scienceHallCoords,engineeringHall2Coords,engineeringHall3Coords } from './buildings';
 import { getDownloadURL, getStorage,ref } from 'firebase/storage';
 import { initializeApp } from "firebase/app";
 
@@ -307,6 +307,28 @@ const Map = (props) => {
     console.log('mouseover');
     engineeringHall2Polygon.setOptions({
         ...PolygonOptions,fillColor:'gray',paths:engineeringHall2Coords
+    });
+});
+
+
+
+  const engineeringHall3Polygon = new naver.maps.Polygon({...PolygonOptions,paths:engineeringHall3Coords});
+  naver.maps.Event.addListener(engineeringHall3Polygon, "click", function () {
+    alert('engineeringHall3Polygon click');
+    clickedbuilding='engineeringHall3'; // 제2공학관
+    setClicked(true);
+  });
+
+  naver.maps.Event.addListener(engineeringHall3Polygon, 'mouseout', () => {
+    console.log('mouseout');
+    engineeringHall3Polygon.setOptions({
+      ...PolygonOptions,fillColor:'#E0F4F3',paths:engineeringHall3Coords
+    });
+});
+  naver.maps.Event.addListener(engineeringHall3Polygon, 'mouseover', () => {
+    console.log('mouseover');
+    engineeringHall3Polygon.setOptions({
+        ...PolygonOptions,fillColor:'gray',paths:engineeringHall3Coords
     });
 });
 

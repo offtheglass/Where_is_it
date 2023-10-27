@@ -1,7 +1,9 @@
 const buildings = {
-    'engineeringHall':['+1F','+2F','+3F'],
+    'engineeringHall':['+1F','+2F'],
     'engineeringHall2':['+1F','+2F','+3F'],
+    'engineeringHall3':['+1F','+2F'],
     'scienceHall':['+1F','+2F']
+    
     
   } 
 
@@ -19,15 +21,22 @@ const engineeringHall2Coords = [
   new naver.maps.LatLng(37.562353, 126.935710),
 ];
 
+const engineeringHall3Coords = [
+  new naver.maps.LatLng(37.561732, 126.934640), 
+  new naver.maps.LatLng(37.561948, 126.934678),
+  new naver.maps.LatLng(37.561740, 126.935646),
+  new naver.maps.LatLng(37.561559, 126.935595),
+
+];
+
 const scienceHallCoords =[
     new naver.maps.LatLng(37.563944, 126.934048),
     new naver.maps.LatLng(37.563768, 126.934907),
     new naver.maps.LatLng(37.564018, 126.935523),
     new naver.maps.LatLng(37.564231, 126.935602),
     new naver.maps.LatLng(37.564482, 126.934452),
-
   ];
 
  
 
-export {buildings,engineeringHallCoords,scienceHallCoords,engineeringHall2Coords}
+export {buildings,engineeringHallCoords,scienceHallCoords,engineeringHall2Coords,engineeringHall3Coords}
