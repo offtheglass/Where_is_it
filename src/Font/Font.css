@@ -1,0 +1,64 @@
+@font-face {
+    font-family: "BMDOHYEON";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMDOHYEON_otf.woff") format("woff");
+  }
+  
+  @font-face {
+    font-family: "BMEULJIRO";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMEULJIRO.woff") format("woff");
+  }
+  
+  @font-face {
+    font-family: "BMEuljiro10yearslaterOTF";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMEuljiro10yearslaterOTF.woff") format("woff");
+  }
+  
+  @font-face {
+    font-family: "BMEuljirooraeoraeOTF";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMEuljirooraeoraeOTF.woff") format("woff");
+  }
+  
+  @font-face {
+    font-family: "BMHANNA_11yrs_otf";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMHANNA_11yrs_otf.woff") format("woff");
+  }
+  @font-face {
+    font-family: "BMHANNAAir_otf";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMHANNAAir_otf.woff") format("woff");
+  }
+  @font-face {
+    font-family: "BMHANNAProOTF";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMHANNAProOTF.woff") format("woff");
+  }
+  @font-face {
+    font-family: "BMJUA_otf";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMJUA_otf.woff") format("woff");
+  }
+  @font-face {
+    font-family: "BMKIRANGHAERANG-OTF";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMKIRANGHAERANG-OTF.woff") format("woff");
+  }
+  @font-face {
+    font-family: "BMYEONSUNG_otf";
+    font-style: normal;
+    font-weight: normal;
+    src: url("./BMYEONSUNG_otf.woff") format("woff");
+  }

@@ -3,7 +3,7 @@ import './App.css';
 import Map from './Components/Map';
 import { MarkerData, toiletMarkers, trashMarkers, waterMarkers } from "./Components/Markers";
 import SelectButton from './Components/SelectButton';
-
+import './Font/Font.css'
 
 function App() {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
@@ -23,6 +23,7 @@ function App() {
   return (
     <div id="content">
       {/* <SelectButton showMarkers={showMarkers} /> */}
+      <div id="Title">Where is it</div>
       <div id="mapcontainer">
       <Map markers={markers}></Map>
       </div>

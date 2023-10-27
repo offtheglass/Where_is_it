@@ -1,6 +1,6 @@
 import React,{useEffect, useState,useRef}from 'react';
 import './index.css'; // Import the CSS file
-import { buildings,engineeringHallCoords,scienceHallCoords } from './buildings';
+import { buildings,engineeringHallCoords,scienceHallCoords,engineeringHall2Coords } from './buildings';
 import { getDownloadURL, getStorage,ref } from 'firebase/storage';
 import { initializeApp } from "firebase/app";
 
@@ -49,15 +49,14 @@ const Map = (props) => {
       }
   },  // getMapType 함수에서
 
-  getMapType = async function(floor) { // getMapType 함수는 층을 입력받아서 그에 해당하는 옵션의 이미지 타입을 리턴
+  getMapType = async function(floor,ckdbuilding) { // getMapType 함수는 층을 입력받아서 그에 해당하는 옵션의 이미지 타입을 리턴
       // const imageRef = ref(storage, "gs://where-is-it-8a8ff.appspot.com/haerin"+(Number(floor.slice(0,-1))+1)+'F_0_0_0.jpeg'); // Replace with the actual path to your image
       
-      
-      const engineeringhall_0_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_0_0_0.png"); // Replace with the actual path to your image
-      const engineeringhall_1_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_0_0.png"); // Replace with the actual path to your image
-      const engineeringhall_1_0_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_0_1.png"); // Replace with the actual path to your image
-      const engineeringhall_1_1_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_1_0.png"); // Replace with the actual path to your image
-      const engineeringhall_1_1_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_1_1.png"); // Replace with the actual path to your image
+      // const engineeringhall_0_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_0_0_0.png"); // Replace with the actual path to your image
+      // const engineeringhall_1_0_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_0_0.png"); // Replace with the actual path to your image
+      // const engineeringhall_1_0_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_0_1.png"); // Replace with the actual path to your image
+      // const engineeringhall_1_1_0 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_1_0.png"); // Replace with the actual path to your image
+      // const engineeringhall_1_1_1 = ref(storage, "gs://where-is-it-8a8ff.appspot.com/engineeringhall_1_1_1.png"); // Replace with the actual path to your image
      
     // https로 접근하려면 https://firebasestorage.googleapis.com/v0/b/where-is-it-8a8ff.appspot.com/o/engineeringhall_0_0_0.png?alt=media&token=토큰 입려하면됨
      
@@ -65,7 +64,7 @@ const Map = (props) => {
     // line 89에서 사용하고 tileset에 추가하는 방법 가능
     // 더 좋은 방법 없는지 물어보기
       
-     
+      
       let commonOptions = {
               name: '',
               minZoom: 0,
@@ -85,7 +84,7 @@ const Map = (props) => {
                       //  'http://127.0.0.1:8080/engineeringhall_1_1_0.png',
                       //  'http://127.0.0.1:8080/engineeringhall_1_0_1.png', 
                       //  'http://127.0.0.1:8080/engineeringhall_1_1_1.png',
-                      "https://storage.googleapis.com/where-is-it-8a8ff.appspot.com/engineeringhall%3A{z}%3A{x}%3A{y}.png"
+                      "https://storage.googleapis.com/where-is-it-8a8ff.appspot.com/"+ckdbuilding+'_'+floor+"%3A{z}%3A{x}%3A{y}.png"
                       // [a,b,c,d]로 놓으면 a가 (0,0)에, b가 (1,0)과 (0,1)에, c가 (1,1)에 들어옴
                     ], 
               // tileSet: 지도의 타일 이미지 URL 또는 URL의 목록을 지정, 건물을 누르면 뜨는 이미지의 URL을 tileSet에 입력하면 됨
@@ -159,7 +158,7 @@ const Map = (props) => {
       let a = 1;
       const setMapTypes = await Promise.all(
         buildings[clickedbuilding].map(async (value:string)=>{ 
-          const result = await getMapType(value.substring(1));
+          const result = await getMapType(value.substring(1),clickedbuilding);
           maptypes[value]=result; 
           console.log(a);
           return result;
@@ -239,6 +238,7 @@ const Map = (props) => {
       clickable: true
     }
 
+
     const engineeringHallPolygon = new naver.maps.Polygon(PolygonOptions);
     // 이 네모 상자를 클릭하면 함수가 실행되도록 eventListener를 등록
     naver.maps.Event.addListener(engineeringHallPolygon, "click", function () { ``
@@ -288,7 +288,31 @@ const Map = (props) => {
       });
   });
 
+
+  const engineeringHall2Polygon = new naver.maps.Polygon({...PolygonOptions,paths:engineeringHall2Coords});
+
+  naver.maps.Event.addListener(engineeringHall2Polygon, "click", function () {
+    alert('engineeringHall2Polygon click');
+    clickedbuilding='engineeringHall2'; // 제2공학관
+    setClicked(true);
+  });
+
+  naver.maps.Event.addListener(engineeringHall2Polygon, 'mouseout', () => {
+    console.log('mouseout');
+    engineeringHall2Polygon.setOptions({
+      ...PolygonOptions,fillColor:'#E0F4F3',paths:engineeringHall2Coords
+    });
+});
+  naver.maps.Event.addListener(engineeringHall2Polygon, 'mouseover', () => {
+    console.log('mouseover');
+    engineeringHall2Polygon.setOptions({
+        ...PolygonOptions,fillColor:'gray',paths:engineeringHall2Coords
+    });
+});
+
   }
+
+
 
   useEffect(() => {
     loadMap();
